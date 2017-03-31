@@ -143,6 +143,10 @@
 	#include <avr/interrupt.h>
 #endif
 
+#if defined (PARTICLE)
+  #include <SparkIntervalTimer.h>
+#endif
+
 // Shouldn't need to change these values unless you have a specific need to do so.
 #define MAX_SENSOR_DISTANCE 500 // Maximum sensor distance can be as high as 500cm, no reason to wait for ping longer than sound takes to travel this distance and back. Default=500
 #define US_ROUNDTRIP_CM 57      // Microseconds (uS) it takes sound to travel round-trip 1cm (2cm total), uses integer to save compiled code space. Default=57
@@ -170,7 +174,7 @@
 #define NewPingConvert(echoTime, conversionFactor) (max(((unsigned int)echoTime + conversionFactor / 2) / conversionFactor, (echoTime ? 1 : 0)))
 
 // Detect non-AVR microcontrollers (Teensy 3.x, Arduino DUE, etc.) and don't use port registers or timer interrupts as required.
-#if (defined (__arm__) && defined (TEENSYDUINO))
+#if (defined (__arm__) && (defined (TEENSYDUINO) || defined (PARTICLE)))
 	#undef  PING_OVERHEAD
 	#define PING_OVERHEAD 1
 	#undef  PING_TIMER_OVERHEAD
@@ -230,9 +234,22 @@ class NewPing {
 #if DO_BITWISE == true
 		uint8_t _triggerBit;
 		uint8_t _echoBit;
-		volatile uint8_t *_triggerOutput;
-		volatile uint8_t *_echoInput;
-		volatile uint8_t *_triggerMode;
+  #if defined(PARTICLE)
+    #if !defined(portModeRegister)
+      #if defined (STM32F10X_MD)
+        #define portModeRegister(port)     ( &(port->CRL) )
+      #elif defined (STM32F2XX)
+        #define portModeRegister(port)     ( &(port->MODER) )
+      #endif
+    #endif
+		volatile uint32_t *_triggerOutput;
+		volatile uint32_t *_echoInput;
+		volatile uint32_t *_triggerMode;
+  #else
+    volatile uint8_t *_triggerOutput;
+    volatile uint8_t *_echoInput;
+    volatile uint8_t *_triggerMode;
+  #endif
 #else
 		uint8_t _triggerPin;
 		uint8_t _echoPin;
