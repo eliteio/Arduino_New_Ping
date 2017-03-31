@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------
 // NewPing Library - v1.8 - 07/30/2016
 //
 // AUTHOR/LICENSE:
@@ -55,6 +55,8 @@
 //   NewPing::timer_stop() - Stop the timer.
 //
 // HISTORY:
+// 03/31/2017 v1.8a - Added support for Particle devices
+//
 // 07/30/2016 v1.8 - Added support for non-AVR microcontrollers. For non-AVR
 //   microcontrollers, advanced ping_timer() timer methods are disabled due to
 //   inconsistencies or no support at all between platforms. However, standard
