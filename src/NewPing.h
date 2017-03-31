@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-// NewPing Library - v1.8 - 07/30/2016
+// NewPing Library - v1.8a - 03/31/2017
 //
 // AUTHOR/LICENSE:
 // Created by Tim Eckel - teckel@leethost.com
