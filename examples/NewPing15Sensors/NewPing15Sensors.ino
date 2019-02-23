@@ -39,9 +39,11 @@ NewPing sonar[SONAR_NUM] = {     // Sensor object array.
 
 void setup() {
   Serial.begin(115200);
-  pingTimer[0] = millis() + 75;           // First ping starts at 75ms, gives time for the Arduino to chill before starting.
-  for (uint8_t i = 1; i < SONAR_NUM; i++) // Set the starting time for each sensor.
+  pingTimer[0] = millis() + 75;             // First ping starts at 75ms, gives time for the Arduino to chill before starting.
+  for (uint8_t i = 1; i < SONAR_NUM; i++) { // Set the starting time for each sensor.
+    sonar[i].begin();
     pingTimer[i] = pingTimer[i - 1] + PING_INTERVAL;
+  }
 }
 
 void loop() {

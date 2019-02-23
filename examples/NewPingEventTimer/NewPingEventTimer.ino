@@ -22,6 +22,7 @@ unsigned long pingTimer;     // Holds the next ping time.
 
 void setup() {
   Serial.begin(115200); // Open serial monitor at 115200 baud to see ping results.
+  sonar.begin();
   pingTimer = millis(); // Start now.
 }
 

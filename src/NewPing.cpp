@@ -27,6 +27,12 @@ NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, unsigned int max_cm_dist
 
 	set_max_distance(max_cm_distance); // Call function to set the max sensor distance.
 
+#if ONE_PIN_ENABLED != true && DO_BITWISE == true
+	*_triggerMode |= _triggerBit; // Set trigger pin to output.
+#endif
+}
+
+NewPing::begin() {
 #if (defined (__arm__) && (defined (TEENSYDUINO) || defined(PARTICLE))) || DO_BITWISE != true
 	pinMode(echo_pin, INPUT);     // Set echo pin to input (on Teensy 3.x (ARM), pins default to disabled, at least one pinMode() is needed for GPIO mode).
 	pinMode(trigger_pin, OUTPUT); // Set trigger pin to output (on Teensy 3.x (ARM), pins default to disabled, at least one pinMode() is needed for GPIO mode).
@@ -35,12 +41,7 @@ NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, unsigned int max_cm_dist
 #if defined (ARDUINO_AVR_YUN)
 	pinMode(echo_pin, INPUT);     // Set echo pin to input for the Arduino Yun, not sure why it doesn't default this way.
 #endif
-
-#if ONE_PIN_ENABLED != true && DO_BITWISE == true
-	*_triggerMode |= _triggerBit; // Set trigger pin to output.
-#endif
 }
-
 
 // ---------------------------------------------------------------------------
 // Standard ping methods
